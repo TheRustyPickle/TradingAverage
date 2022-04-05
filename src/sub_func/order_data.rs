@@ -1,6 +1,8 @@
 use std::collections::HashMap;
 use std::io::prelude::*;
 use std::fs::File;
+
+#[derive(Debug)]
 pub struct OrderData {
     buy_prices: HashMap<String, Vec<f32>>,
     sell_prices: HashMap<String, Vec<f32>>,
@@ -41,7 +43,7 @@ impl OrderData  {
         }
     }
 
-    pub fn print_write_average(&self) {
+    pub fn print_write_average(&self, file_name: &str) {
         let mut txt_data = String::new();
         let mut sorted_buy:Vec<_> = self.buy_prices.iter().collect();
         let mut sorted_sell: Vec<_> = self.sell_prices.iter().collect();
@@ -53,7 +55,6 @@ impl OrderData  {
             let total_value = value[0];
             let total_amount = value[1];
             let average_buy = total_value / total_amount;
-            //println!("average buy price of {} of is {} amount {}", key, average_buy, total_amount);
             let s1 = format!("average buy price of {} of is {} amount {}\n", key, average_buy, total_amount);
             txt_data += &s1;
         }
@@ -62,12 +63,11 @@ impl OrderData  {
             let total_value = value[0];
             let total_amount = value[1];
             let average_buy = total_value / total_amount;
-            //println!("average sell price of {} of is {} amount {}", key, average_buy, total_amount);
             let s2 = format!("\naverage sell price of {} of is {} amount {}", key, average_buy, total_amount);
             txt_data += &s2;
         }
 
-        let mut open = File::create("data.txt").expect("Error creating txt file");
+        let mut open = File::create(file_name).expect("Error creating txt file");
         open.write_all(txt_data.as_bytes()).expect("Error writing txt file");
     }
 }
