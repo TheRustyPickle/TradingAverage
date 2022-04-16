@@ -1,8 +1,8 @@
-mod binance;
-mod kucoin;
 mod sub_func;
+mod csv_reader;
+mod xlsx_reader_binance;
 
-use crate::sub_func::file_initiator;
+use sub_func::func_initiator::file_initiator;
 use std::process;
 use std::fs::File;
 use std::io::prelude::*;

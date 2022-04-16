@@ -1,13 +1,16 @@
-use crate::binance::csv_reader_binance::read_csv_bin;
-use crate::binance::xlsx_reader_binance::read_xlsx_bin;
-use crate::kucoin::csv_reader_kucoin::read_csv_kucoin;
-use super::order_data::OrderData;
+use crate::xlsx_reader_binance::read_xlsx_bin;
+use crate::sub_func::order_data::OrderData;
+use crate::csv_reader::read_csv;
 use std::fs;
 use std::process;
 use std::error::Error;
 use std::fs::File;
 use std::io::prelude::*;
 use std::collections::HashMap;
+
+// goes through the current directory searching for the supported files
+// and initializes the relevant functions. Use rust-analyzer for easier
+// view of the numbers sent to the functions.
 
 pub fn file_initiator() -> HashMap<String, Result<OrderData, Box<dyn Error>>>{
     let mut map = HashMap::new();
@@ -19,13 +22,15 @@ pub fn file_initiator() -> HashMap<String, Result<OrderData, Box<dyn Error>>>{
 
         match path.to_lowercase().as_ref() {
             "binance.csv" => {
-                map.insert("binance_csv.txt".to_string(), read_csv_bin(&path));
+                map.insert("binance_csv.txt".to_string(), read_csv(&path, 2, 4,
+                                                                    9, 8, 11, "FILLED"));
             },
             "binance.xlsx" => {
                 map.insert("binance_xlsx.txt".to_string(), read_xlsx_bin(&path));
             },
             "kucoin.csv" => {
-                map.insert("kucoin.txt".to_string(), read_csv_kucoin(&path));
+                map.insert("kucoin.txt".to_string(), read_csv(&path, 3, 4, 11, 
+                                                            9, 16, "done"));
             },
             _ => {},
         }

@@ -2,6 +2,8 @@ use std::collections::HashMap;
 use std::io::prelude::*;
 use std::fs::File;
 
+// stores the order data in hashmap in the following format:
+// {pair_name: [buy/sell prices]}
 #[derive(Debug)]
 pub struct OrderData {
     buy_prices: HashMap<String, Vec<f32>>,
@@ -55,7 +57,7 @@ impl OrderData  {
             let total_value = value[0];
             let total_amount = value[1];
             let average_buy = total_value / total_amount;
-            let s1 = format!("average buy price of {} of is {} amount {}\n", key, average_buy, total_amount);
+            let s1 = format!("Average buy price of {} of is {}, total traded amount {}\n", key, average_buy, total_amount);
             txt_data += &s1;
         }
         
@@ -63,7 +65,7 @@ impl OrderData  {
             let total_value = value[0];
             let total_amount = value[1];
             let average_buy = total_value / total_amount;
-            let s2 = format!("\naverage sell price of {} of is {} amount {}", key, average_buy, total_amount);
+            let s2 = format!("\nAverage sell price of {} of is {}, total traded amount {}", key, average_buy, total_amount);
             txt_data += &s2;
         }
 
